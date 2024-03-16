@@ -1,18 +1,19 @@
 import socket
+import ssl
 
-# Server configuration
 HOST = ''
-PORT = 8080
+PORT = 8069
 
-# Create a socket object
+client_certif = '/Users/lokranjan/Personal/SSL Certificates/client-cert.pem'
+client_keyf = '/Users/lokranjan/Personal/SSL Certificates/client-key.pem'
+
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Connect to the server
 client_socket.connect((HOST, PORT))
 
-# Send a message to the server
-message = "Hello, server!"
-client_socket.sendall(message.encode())
+ssl_socket = ssl.wrap_socket(client_socket, certfile=client_certif, keyfile=client_keyf)
 
-# Close the connection
-client_socket.close()
+message = "Hello, server!"
+ssl_socket.sendall(message.encode())
+
+ssl_socket.close()
