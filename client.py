@@ -22,7 +22,7 @@ ssl_context.load_verify_locations(server_cert_path)
 client_socket = ssl_context.wrap_socket(client_socket, server_hostname="loki")
 
 try:
-    # Connect to the server
+    # Connection with server
     client_socket.connect((HOST, PORT))
     print("Connected to server")
 

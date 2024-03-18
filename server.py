@@ -9,8 +9,12 @@ PORT = 12345
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Wrapping the socket with SSL
+server_cert_path = "/Users/lokranjan/Personal/SSLcerts/servercert.pem"
+server_key_path = "/Users/lokranjan/Personal/SSLcerts/serverkey.pem"
+
 ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-ssl_context.load_cert_chain(certfile="/Users/lokranjan/Personal/SSLcerts/servercert.pem", keyfile="/Users/lokranjan/Personal/SSLcerts/serverkey.pem")
+ssl_context.load_cert_chain(certfile=server_cert_path, keyfile=server_key_path)
+
 server_socket = ssl_context.wrap_socket(server_socket, server_side=True)
 
 # Socket binding with port address
@@ -37,3 +41,4 @@ while True:
 
     # Closing connection
     client_socket.close()
+    print("Connection closed")
