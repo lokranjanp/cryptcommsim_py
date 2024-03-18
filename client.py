@@ -1,22 +1,24 @@
 import socket
 import ssl
 
-# Server configurations
+# Server configuration
 HOST = ''
 PORT = 12345
 
+# Creating a user menu for Client Side
 def menu():
     print("1. Send a message to the server")
     print("2. Exit")
     choice = input("Enter your choice: ")
     return int(choice)
 
-# Create a TCP/IP socket
+# TCP/IP socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Wrap the socket with SSL
+# Wrapping the socket with SSL
+server_cert_path = "/Users/lokranjan/Personal/SSLcerts/servercert.pem"
 ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-ssl_context.load_verify_locations("/Users/lokranjan/Personal/SSLcerts/servercert.pem")
+ssl_context.load_verify_locations(server_cert_path)
 client_socket = ssl_context.wrap_socket(client_socket, server_hostname="loki")
 
 try:
