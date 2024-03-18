@@ -9,8 +9,10 @@ SERVER CERTIFICATE : openssl req -x509 -newkey rsa:4096 -keyout serverkey.pem -o
 
 CLIENT CERTIFICATE : openssl req -x509 -newkey rsa:4096 -keyout clientkey.pem -out clientcert.pem -days 3650
 
-->   Public Key Certificate format  X.509
+->   Public Key Certificate format : X.509
+
 ->   Encryption Symmetric Algorithm used : RSA - 4096 bit [Private + Public] keys
+
 ->  -days 3650 : Duration of certificate validity [10 years]
 
 Refer https://docs.python.org/3/library/ssl.html#exceptions for further SSL/TSL functions and error handling
