@@ -3,7 +3,7 @@ import ssl
 
 # Server configuration
 HOST = ''
-PORT = 12345
+PORT = 8080
 
 # Creating a user menu for Client Side
 def menu():
@@ -24,22 +24,16 @@ client_socket = ssl_context.wrap_socket(client_socket, server_hostname="loki")
 try:
     # Connection with server
     client_socket.connect((HOST, PORT))
-    print("Connected to server")
 
     while True:
-        choice = menu()
+        init_user_req = input("Please enter username :")
+        client_socket.sendall(init_user_req.encode())
+        init_pass_req = input("Please enter password :")
+        client_socket.sendall(init_pass_req.encode())
 
-        if choice == 1:
-            message = input("Enter your message: ")
-            client_socket.sendall(message.encode())
+        auth_status = client_socket.recv(1024)
+        print(auth_status.decode())
 
-            # Receive response from the server
-            response = client_socket.recv(1024)
-            print("Server response:", response.decode())
-
-        elif choice == 2:
-            print("Exiting...")
-            break
 
 except ssl.SSLError as e:
     print("SSL Error:", e)
