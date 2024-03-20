@@ -1,5 +1,6 @@
 import socket
 import ssl
+from file_transfer import *
 
 # Server configuration
 HOST = ''
@@ -8,7 +9,8 @@ PORT = 8080
 # Creating a user menu for Client Side
 def menu():
     print("1. Send a message to the server")
-    print("2. Exit")
+    print("2. File Transfer")
+    print("3. Exit")
     choice = input("Enter your choice: ")
     return int(choice)
 
@@ -25,15 +27,32 @@ try:
     # Connection with server
     client_socket.connect((HOST, PORT))
 
-    while True:
-        init_user_req = input("Please enter username :")
-        client_socket.sendall(init_user_req.encode())
-        init_pass_req = input("Please enter password :")
-        client_socket.sendall(init_pass_req.encode())
+    init_user_req = input("Please enter username :")
+    client_socket.sendall(init_user_req.encode())
+    init_pass_req = input("Please enter password :")
+    client_socket.sendall(init_pass_req.encode())
 
-        auth_status = client_socket.recv(1024)
-        print(auth_status.decode())
+    auth_status = client_socket.recv(1024)
+    print(auth_status.decode())
+    if auth_status.decode() == "User authentication passed":
+        session = True
 
+    while session:
+        choice = menu()
+
+        if choice == 1:
+            client_socket.sendall(str(choice).encode())
+            message = input("Enter message : ")
+            client_socket.sendall(message.encode())
+            response_message = client_socket.recv(1024)
+            print(response_message.decode())
+
+        if choice == 2:
+            file_name = "example.txt"
+            upload_file(client_socket, file_name)
+
+        if choice == 3:
+            session = False
 
 except ssl.SSLError as e:
     print("SSL Error:", e)

@@ -1,6 +1,7 @@
 import socket
 import ssl
 from auth import *
+from file_transfer import *
 
 # Server configuration
 HOST = 'localhost'
@@ -37,13 +38,24 @@ while True:
 
     # Receiving incoming data from client
     data = client_socket.recv(1024)
-    if data:
-        message = data.decode()
-        print("Received:", message)
+    if data == "1":
+        message = client_socket.recv(1024)
+        message = message.swapcase()
+        client_socket.sendall(message.encode())
 
-    # Sending a response back to client
-    message = message.swapcase()
-    client_socket.sendall(message.encode())
+    if data == "2":
+        request_type = client_socket.recv(1024).decode()
+
+        if request_type == "upload":
+            # Handle file upload request
+            handle_file_upload(client_socket)
+
+        elif request_type == "download":
+            # Receive file name from client
+            file_name = client_socket.recv(1024).decode()
+
+            # Handle file download request
+            handle_file_download(client_socket, file_name)
 
     # Closing connection
     client_socket.close()
