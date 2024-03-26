@@ -27,7 +27,6 @@ server_socket.bind((HOST, PORT))
 server_socket.listen(1)
 
 print("Server is listening...")
-
 while True:
     # Awaiting connections
     client_socket, client_address = server_socket.accept()
