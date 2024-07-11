@@ -1,6 +1,7 @@
 import hashlib
 import mysql.connector as sql_conn
-
+import dotenv
+import os
 
 def hash_password(password):
     # Hash password using SHA-256
@@ -24,10 +25,10 @@ def get_auth_details(client_socket, client_address):
 def fetch_auth_user(username, password):
     try:
         db_conn = sql_conn.connect(
-            host="localhost",
-            user="root",
-            password="loki2003",
-            database="user_auth"
+            host= os.getenv("DB_HOST"),
+            user= os.getenv("USER"),
+            password= os.getenv("PASSWORD"),
+            database= os.getenv("DATABASE")
         )
         cursor = db_conn.cursor()
 
